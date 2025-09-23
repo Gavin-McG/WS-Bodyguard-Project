@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private SpriteResolver spriteResolver;
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float walkFrameRate = 0.15f; // time per walking frame
 
     private Vector2 moveInput;
     private string currentLabel;
@@ -15,7 +16,10 @@ public class PlayerController : MonoBehaviour
     private string leftLabel => "Left";
     private string forwardLabel => "Forward";
     private string backwardLabel => "Backward";
-    
+
+    private int walkFrame = 1;
+    private float walkTimer;
+
     private void Update()
     {
         moveInput = moveAction != null ? moveAction.action.ReadValue<Vector2>() : Vector2.zero;
@@ -24,6 +28,7 @@ public class PlayerController : MonoBehaviour
         transform.position += move * (moveSpeed * Time.deltaTime);
 
         UpdateSpriteDirection(moveInput);
+        UpdateCategory(moveInput);
         
         UpdateShaderKeywords();
     }
@@ -32,24 +37,21 @@ public class PlayerController : MonoBehaviour
     {
         // Keep label unchanged when idle
         if (input == Vector2.zero)
-            return; 
+            return;
 
         string newLabel = null;
 
         // Prioritize horizontal when diagonal
         if (Mathf.Abs(input.x) > 0 && Mathf.Abs(input.y) > 0)
         {
-            // Diagonal movement → keep label if valid
             if (IsLabelValidForInput(currentLabel, input))
                 return;
 
-            // If invalid, prefer horizontal direction
             if (input.x > 0) newLabel = rightLabel;
             else if (input.x < 0) newLabel = leftLabel;
         }
         else
         {
-            // Single-axis movement
             if (input.x > 0) newLabel = rightLabel;
             else if (input.x < 0) newLabel = leftLabel;
             else if (input.y > 0) newLabel = backwardLabel;
@@ -58,9 +60,8 @@ public class PlayerController : MonoBehaviour
 
         if (!string.IsNullOrEmpty(newLabel) && newLabel != currentLabel)
         {
-            string currentCategory = spriteResolver.GetCategory();
             currentLabel = newLabel;
-            spriteResolver.SetCategoryAndLabel(currentCategory, currentLabel);
+            spriteResolver.SetCategoryAndLabel(spriteResolver.GetCategory(), currentLabel);
         }
     }
 
@@ -74,6 +75,37 @@ public class PlayerController : MonoBehaviour
         if (input.y < 0 && label == forwardLabel) return true;
 
         return false;
+    }
+
+    private void UpdateCategory(Vector2 input)
+    {
+        if (input == Vector2.zero)
+        {
+            // Standing
+            if (spriteResolver.GetCategory() != "Standing")
+            {
+                spriteResolver.SetCategoryAndLabel("Standing", currentLabel ?? forwardLabel);
+                walkFrame = 1;
+                walkTimer = 0f;
+            }
+        }
+        else
+        {
+            // Walking → cycle frames
+            walkTimer += Time.deltaTime;
+            if (walkTimer >= walkFrameRate)
+            {
+                walkTimer = 0f;
+                walkFrame++;
+                if (walkFrame > 4) walkFrame = 1;
+            }
+
+            string walkingCategory = $"Walking-{walkFrame}";
+            if (spriteResolver.GetCategory() != walkingCategory)
+            {
+                spriteResolver.SetCategoryAndLabel(walkingCategory, currentLabel ?? forwardLabel);
+            }
+        }
     }
 
     private void UpdateShaderKeywords()

@@ -864,7 +864,7 @@
     "m_ObjectId": "00371765920c46b1a5e884f7147ef3f2",
     "m_Title": "Sample Top texture",
     "m_Position": {
-        "x": 254.99998474121095,
+        "x": 255.0,
         "y": 493.0
     }
 }
@@ -938,8 +938,8 @@
     "m_ObjectId": "02e5cb917db54cdb8c5f00535c48c276",
     "m_Title": "Sample SIde texture",
     "m_Position": {
-        "x": 252.99998474121095,
-        "y": 4.999980926513672
+        "x": 253.0,
+        "y": 5.0
     }
 }
 
@@ -1209,7 +1209,7 @@
     "m_Title": "Get uvs of respective planes",
     "m_Position": {
         "x": -1120.0,
-        "y": 220.00001525878907
+        "y": 220.0
     }
 }
 
@@ -1621,6 +1621,21 @@
     "m_ShaderOutputName": "Out",
     "m_StageCapability": 3,
     "m_BareResource": false
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "1c86683fa3a2428b922ac5f65bf61c28",
+    "m_Id": 869868176,
+    "m_DisplayName": "ShrinkFactor",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_ShrinkFactor",
+    "m_StageCapability": 3,
+    "m_Value": 0.10000000149011612,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -4185,6 +4200,9 @@
             "m_Id": "cfcc672eda114171ae33cdd14677d0c9"
         },
         {
+            "m_Id": "1c86683fa3a2428b922ac5f65bf61c28"
+        },
+        {
             "m_Id": "27153ecad7d14ce9abd12cf2cb9f2834"
         }
     ],
@@ -4200,12 +4218,14 @@
     "m_PropertyGuids": [
         "1ba3e4ca-68b0-4834-b744-f3f401a183e1",
         "28d30668-d3ee-4641-bdad-3d35551c0d41",
-        "711bce5c-e58e-4239-a3a4-d3f6127b76c1"
+        "711bce5c-e58e-4239-a3a4-d3f6127b76c1",
+        "4af952c4-8900-41fb-ac0e-4445f8f79f7d"
     ],
     "m_PropertyIds": [
         1189571020,
         446850158,
-        76018787
+        76018787,
+        869868176
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
@@ -4820,8 +4840,8 @@
     "m_ObjectId": "d5011ad327c549e0be70ae7947892d01",
     "m_Title": "Dithering",
     "m_Position": {
-        "x": 1643.9998779296875,
-        "y": 582.9999389648438
+        "x": 1644.0,
+        "y": 583.0
     }
 }
 
