@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9de6c7d0903e4eb428c9f2cb4704d59a
+guid: bced46f648618bc40935579ccac864a4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4328140471139323604
-    second: ConcreteTile-PA_0
+      213: -2182775730884065368
+    second: GrateStair-PA_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ConcreteTile-PA_0
+      name: GrateStair-PA_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4de4048b3d4a01c30800000000000000
-      internalID: 4328140471139323604
+      spriteID: 8a7cf40a90935b1e0800000000000000
+      internalID: -2182775730884065368
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ConcreteTile-PA_0: 4328140471139323604
+      GrateStair-PA_0: -2182775730884065368
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

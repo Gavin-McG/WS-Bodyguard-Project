@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 870609578708690849}
   - component: {fileID: 237681762079186110}
   - component: {fileID: 168548392826041562}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 5533099839699268837}
   - component: {fileID: 317006256749270232}
   - component: {fileID: 5580892229760087613}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,3 +220,4 @@ MonoBehaviour:
   moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   spriteResolver: {fileID: 168548392826041562}
   moveSpeed: 2
+  walkFrameRate: 0.15

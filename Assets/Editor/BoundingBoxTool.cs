@@ -7,6 +7,8 @@ public class BoundingBoxTool : EditorTool
 {
     private GUIContent _iconContent;
 
+	private const float increment = 0.25f;
+
     private void OnEnable()
     {
         _iconContent = new GUIContent()
@@ -58,7 +60,7 @@ public class BoundingBoxTool : EditorTool
 
                 // Snap movement to whole units
                 float delta = Vector3.Dot(newHandlePos - handlePos, normal);
-                delta = Mathf.Round(delta*2f)/2f;
+                delta = Mathf.Round(delta/increment)*increment;
 
                 if (Mathf.Abs(delta) > 0f)
                 {
