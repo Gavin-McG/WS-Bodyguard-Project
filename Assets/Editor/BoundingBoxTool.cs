@@ -58,7 +58,7 @@ public class BoundingBoxTool : EditorTool
 
                 // Snap movement to whole units
                 float delta = Vector3.Dot(newHandlePos - handlePos, normal);
-                delta = Mathf.Round(delta);
+                delta = Mathf.Round(delta*2f)/2f;
 
                 if (Mathf.Abs(delta) > 0f)
                 {

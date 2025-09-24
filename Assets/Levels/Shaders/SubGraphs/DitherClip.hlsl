@@ -3,7 +3,7 @@
 
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Random.hlsl"
 
-void DitherClip_float(float3 InColor, float2 ScreenPosition, float DitherStrength, bool Dither, out float3 OutColor)
+void DitherClip_float(float4 InColor, float2 ScreenPosition, float DitherStrength, bool Dither, out float4 OutColor)
 {
     OutColor = InColor;
 
@@ -20,7 +20,7 @@ void DitherClip_float(float3 InColor, float2 ScreenPosition, float DitherStrengt
     float alpha = DitherStrength - noise;
 
     //Perform dithering alpha clip
-    clip(alpha);
+    clip(InColor.w!=0 ? alpha : -1);
 }
 
 #endif

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LowerWall
+  m_Name: Blank
   m_Shader: {fileID: -6465566751694194690, guid: 909484490cfb0c7458810f3c9c93b0bd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -26,15 +26,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 7617027fac4304d489ae15191a69e945, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8070807b127d9a64cae0fb090ec19a1e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SideTexture:
-        m_Texture: {fileID: 2800000, guid: 7617027fac4304d489ae15191a69e945, type: 3}
+        m_Texture: {fileID: 2800000, guid: 379e531129402d6448a3592a663c6e16, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TopTexture:
-        m_Texture: {fileID: 2800000, guid: 6fe7257599f163e4ba41f513ccc2780a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 379e531129402d6448a3592a663c6e16, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -52,7 +52,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _DITHER: 1
-    - _Dither: 1
+    - _Dither: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
