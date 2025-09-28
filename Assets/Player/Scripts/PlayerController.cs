@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private SpriteResolver spriteResolver;
+    [SerializeField] private Rigidbody rb;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float walkFrameRate = 0.15f; // time per walking frame
     [SerializeField] private float maxStepSize = 0.26f;
@@ -90,6 +91,7 @@ public class PlayerController : MonoBehaviour
                 float newY = castCenter.y - hitDist + playerHeight * 0.5f;
                 targetPos.y = newY;
                 transform.position = targetPos;
+                rb.linearVelocity = Vector3.ProjectOnPlane(rb.linearVelocity, Vector3.up);
                 return;
             }
         }
