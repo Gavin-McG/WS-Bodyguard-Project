@@ -1,14 +1,16 @@
 using NUnit.Framework.Internal.Filters;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class RhythmGameManager : MonoBehaviour
 {
 
     //please note, i do NOT have any experience creating rhythm games.
     //this is just A way that i came up with implementing it.
     //feel free to change it
 
-    public static GameManager instance;
+    public static RhythmGameManager instance;
 
     float game_start_time = 0f;
     public float Game_Time;
@@ -20,8 +22,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] Indicator down_indicator;
     [SerializeField] Indicator right_indicator;
 
-    [SerializeField] float grace_period;
+    [SerializeField] Transform map_movement;
+    [SerializeField] GameObject note_prefab;
 
+    [SerializeField] float grace_period;
 
     int progression = 0; //the current array of the note in the map
     public Note[] Current_Map;
@@ -44,6 +48,51 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         game_start_time = Time.time;
+
+        GenerateStartingRandomSong(10);
+
+    }
+
+    void GenerateStartingRandomSong(int n)
+    {
+
+        for (int i = 1; i <= n; i++)
+        {
+
+            Direction new_note_direction = (Direction) Random.Range(0, 4);
+
+            Note new_note = Instantiate(note_prefab, new Vector2(((float)((float) new_note_direction) * 2) - 3, -i), Quaternion.identity).GetComponent<Note>();
+            Debug.Log(new_note.transform.position.x);
+            
+            switch ((int)new_note_direction) {
+
+                case 0:
+
+                    new_note.transform.Rotate(new Vector3(0, 0, 90));
+                    break;
+
+                case 1:
+
+                    new_note.transform.Rotate(new Vector3(0, 0, 180));
+                    break;
+
+                case 2:
+
+                    new_note.transform.Rotate(new Vector3(0, 0, 0));
+                    break;
+
+                case 3:
+
+                    new_note.transform.Rotate(new Vector3(0, 0, -90));
+                    break;
+            }
+
+            new_note.transform.SetParent(map_movement);
+            new_note.TimeToHit = i;
+
+
+        }
+
     }
 
     // Update is called once per frame
@@ -84,16 +133,17 @@ public class GameManager : MonoBehaviour
             if (Game_Time - Current_Map[progression].TimeToHit > grace_period && !Current_Map[progression].hit)
             {
                 progression++;
-                Debug.Log("you missed, dumbass");
+                Debug.Log("you missed");
 
                 //miss code here
             }
+
+            map_movement.position = new Vector2(map_movement.position.x, Game_Time);
         }
     }
 
     void Start_Game() //this function will eventually be the function that starts the rhythm game.
     {
-
         game_start_time = Time.time;
     }
 
@@ -114,10 +164,6 @@ public class GameManager : MonoBehaviour
         up_indicator.Indicate();
         QueuedInputs[2] = Game_Time;
     }
-
-    
-
-    
 
     private void OnRight()
     {

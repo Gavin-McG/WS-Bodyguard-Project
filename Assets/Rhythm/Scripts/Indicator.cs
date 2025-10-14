@@ -14,9 +14,6 @@ public class Indicator : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
     }
-
-
-
     private void Update()
     {
         timer -= Time.deltaTime;
