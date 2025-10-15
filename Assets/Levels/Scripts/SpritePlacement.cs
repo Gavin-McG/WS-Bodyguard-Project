@@ -29,8 +29,9 @@ public class SpritePlacement : MonoBehaviour
         float height = aspectRatio * width / Vector3.Cross(Vector2.up, faceDirection).magnitude;
         
         //set position
+        Vector2 pivot = sprite.pivot / sprite.textureRect.size;
         Vector3 basePosition = transform.position + offset;
-        Vector3 centerPosition = basePosition + Vector3.up * height * 0.5f;
+        Vector3 centerPosition = basePosition + Vector3.up * height * pivot.y;
         spriteRenderer.transform.position = centerPosition;
         
         //set scale
