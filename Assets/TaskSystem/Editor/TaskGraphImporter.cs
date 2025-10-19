@@ -29,25 +29,25 @@ internal class TaskGraphImporter : ScriptedImporter
             taskNode.CreateTask();
             var task = taskNode.GetTask();
             
-            if (taskNode is BeginTaskNode node)
-            {
-                TaskSystem system = ScriptableObject.CreateInstance<TaskSystem>();
-                system.Init(task);
-                ctx.AddObjectToAsset("Main", system); // TODO Add texture
-                ctx.SetMainObject(system);
-                DestroyImmediate(task);
-            }
-            else 
-            {
-                nonMainAssetCount++;
-                ctx.AddObjectToAsset(nonMainAssetCount.ToString(), task); // TODO Add texture
-            }
+            nonMainAssetCount++;
+            ctx.AddObjectToAsset(nonMainAssetCount.ToString(), task); // TODO Add texture
         }
         
         //assign next task references between nodes
         foreach (var taskNode in taskNodes)
         {
             taskNode.AssignRelativeTasks();
+        }
+
+        TaskSystem system = graph.GetNodes().OfType<BeginTaskNode>().FirstOrDefault()?.GetSystem();
+        if (system != null)
+        {
+            ctx.AddObjectToAsset("Main", system); // TODO Add texture
+            ctx.SetMainObject(system);
+        }
+        else
+        {
+            Debug.LogError($"Graph has so Begin node");
         }
     }
 }

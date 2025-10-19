@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.Events;
 
 public partial class TaskManager
@@ -60,7 +61,7 @@ public partial class TaskManager
             OnRequirementCompleted.RemoveAllListeners();
             OnTaskCompleted.RemoveAllListeners();
 
-            for (int i = 0; i < task.requirements.Count; i++)
+            for (int i = 0; i < callbacks.Count; i++)
             {
                 task.requirements[i].requirementSO.OnRequirementCompleted.RemoveListener(callbacks[i]);
             }

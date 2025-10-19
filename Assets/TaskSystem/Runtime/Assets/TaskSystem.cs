@@ -6,9 +6,9 @@ public class TaskSystem : ScriptableObject
     [SerializeField] public string description;
     [SerializeField] public List<TaskSO> initialTasks = new();
     
-    public void Init(TaskSO baseTask)
+    public void Init(List<TaskSO> initialTasks, string description)
     {
-        description = baseTask.description;
-        initialTasks = new List<TaskSO>(baseTask.nextTasks);
+        this.description = description;
+        this.initialTasks = new List<TaskSO>(initialTasks);
     }
 }

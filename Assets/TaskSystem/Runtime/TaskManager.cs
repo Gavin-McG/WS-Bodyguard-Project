@@ -144,9 +144,9 @@ public partial class TaskManager : MonoBehaviour
     public void ClearAllTasks()
     {
         // Clear listeners
-        foreach (var activeTask in activeTasks)
+        while (activeTasks.Count > 0)
         {
-            EndTask(activeTask.task);
+            EndTask(activeTasks[0].task);
         }
 
         // Clear lists

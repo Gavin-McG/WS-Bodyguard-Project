@@ -45,9 +45,9 @@ MonoBehaviour:
         m_LocalSubgraphs: []
         m_LastKnownBounds:
           serializedVersion: 2
-          x: 222
+          x: 206
           y: 65
-          width: 995
+          width: 1011
           height: 491
         m_GraphElementMetaData:
         - m_Guid:
@@ -119,7 +119,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: f336ee19810326c829934e025f530208
         m_Version: 2
-        m_Position: {x: 222.01883, y: 132.55937}
+        m_Position: {x: 205.91882, y: 138.30937}
         m_Title: 
         m_Tooltip: 
         m_NodePreviewModel:
@@ -127,10 +127,8 @@ MonoBehaviour:
         m_State: 0
         m_InputConstantsById:
           m_KeyList:
-          - __option_Name
           - __option_Description
           m_ValueList:
-          - rid: 5845767227511144696
           - rid: 5845767227511144697
         m_InputPortInfos:
           expandedPortsById:
@@ -147,10 +145,6 @@ MonoBehaviour:
           m_HasUserColor: 0
         m_Node:
           rid: 5845767227511144698
-    - rid: 5845767227511144696
-      type: {class: 'Constant`1[[System.String, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
-      data:
-        m_Value: 
     - rid: 5845767227511144697
       type: {class: 'Constant`1[[System.String, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
       data:
@@ -304,7 +298,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: 5deddfe826fa6a30aa324c4dbeeb25c4
         m_Version: 2
-        m_Position: {x: 867.2227, y: 65.827415}
+        m_Position: {x: 867.2227, y: 66.97741}
         m_Title: TaskNode
         m_Tooltip: 
         m_NodePreviewModel:
@@ -346,7 +340,7 @@ MonoBehaviour:
     - rid: 5845767227511144717
       type: {class: 'Constant`1[[System.String, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
       data:
-        m_Value: Testing Task
+        m_Value: 2nd Testing Task
     - rid: 5845767227511144718
       type: {class: 'Constant`1[[System.String, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
       data:
@@ -540,4 +534,4 @@ MonoBehaviour:
     - rid: 5845767306773790797
       type: {class: 'Constant`1[[System.Boolean, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
       data:
-        m_Value: 0
+        m_Value: 1

@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "InputSystem_Actions",
     "maps": [
         {
@@ -986,6 +987,54 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Testing",
+            "id": "9a09993b-6081-4e64-925a-0d07b4b645e8",
+            "actions": [
+                {
+                    "name": "TestInput1",
+                    "type": "Button",
+                    "id": "36da673a-b530-4e55-9cd6-b4b6ba34bd15",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TestInput2",
+                    "type": "Button",
+                    "id": "decab1ba-db14-44b1-8fb3-8e9922926bf0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6ab32d50-df26-4510-8b7a-7f787957a565",
+                    "path": "<Keyboard>/numpad1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TestInput1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d14d7cdd-c43b-494f-823a-3141beb20906",
+                    "path": "<Keyboard>/numpad2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TestInput2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

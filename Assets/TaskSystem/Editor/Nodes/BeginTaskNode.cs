@@ -1,18 +1,20 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.GraphToolkit.Editor;
 using UnityEngine;
 
 [UseWithGraph(typeof(TaskGraph)), Serializable]
-public class BeginTaskNode : Node, ITaskNode
+public class BeginTaskNode : Node
 {
-    protected TaskOptions taskOptions;
+    protected INodeOption descriptionOption;
     protected IPort taskOutputPort;
 
     protected TaskSO task;
 
     protected override void OnDefineOptions(IOptionDefinitionContext context)
     {
-        taskOptions = TaskOptions.AddOptions(context, false);
+        descriptionOption = context.AddOption<string>("Description").Build();
     }
 
     protected override void OnDefinePorts(IPortDefinitionContext context)
@@ -20,16 +22,20 @@ public class BeginTaskNode : Node, ITaskNode
         taskOutputPort = TaskGraphUtility.AddTaskOutputPort(context);
     }
 
-    public TaskSO CreateTask()
+    public TaskSystem GetSystem()
     {
-        task = taskOptions.GetTask();
-        return task;
-    }
+        List<IPort> connectedPorts = new();
+        taskOutputPort.GetConnectedPorts(connectedPorts);
+        List<TaskSO> initialTasks = connectedPorts
+            .Select(port => port.GetNode())
+            .OfType<ITaskNode>()
+            .Select(node => node.GetTask())
+            .ToList();
 
-    public TaskSO GetTask() => task;
-
-    public void AssignRelativeTasks()
-    {
-        task.nextTasks = TaskGraphUtility.GetConnectedTasks(taskOutputPort);
+        descriptionOption.TryGetValue(out string description);
+        
+        TaskSystem system = ScriptableObject.CreateInstance<TaskSystem>();
+        system.Init(initialTasks, description);
+        return system;
     }
 }

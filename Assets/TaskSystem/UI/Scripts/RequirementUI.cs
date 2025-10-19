@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class RequirementUI : MonoBehaviour
 {
+    [SerializeField] public float rectHeight = 20;
     [SerializeField] Image bulletImage;
     [SerializeField] TextMeshProUGUI description;
     [SerializeField] SpriteLibraryAsset bulletLibrary;
