@@ -36,5 +36,26 @@ public partial class TaskManager
             this.completed = completed;
         }
     }
+    
+    /// <summary>
+    /// Get the info of a specific task if it is active
+    /// </summary>
+    public bool TryGetTaskInfo(TaskSO task, out TaskInfo info)
+    {
+        if (!taskDict.TryGetValue(task, out var activeTask))
+        {
+            info = default;
+            return false;
+        };
+        
+        info = new TaskInfo(activeTask);
+        return true;
+    }
+    
+    /// <summary>
+    /// Get the UI information of all the current tasks
+    /// </summary>
+    public List<TaskInfo> GetAllActiveTaskInfo() =>
+        activeTasks.Select((task)=>new TaskInfo(task)).ToList();
 }
 

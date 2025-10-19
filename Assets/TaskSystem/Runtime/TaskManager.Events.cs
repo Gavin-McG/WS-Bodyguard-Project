@@ -41,5 +41,6 @@ public partial class TaskManager
 
     public TaskEvent OnTaskAdded = new();
     public TaskEvent OnTaskCompleted = new();
+    public TaskEvent OnTaskRemoved = new();
     public RequirementEvent OnRequirementCompleted = new();
 }

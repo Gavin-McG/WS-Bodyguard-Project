@@ -7,6 +7,8 @@ using UnityEngine;
 /// </summary>
 public partial class TaskManager : MonoBehaviour
 {
+    private HashSet<TaskSystem> startedTaskSystems = new();
+    
     private HashSet<TaskSO> completedTasks = new();
     private HashSet<string> completedTaskNames = new();
     
@@ -15,11 +17,7 @@ public partial class TaskManager : MonoBehaviour
     
     private void OnDestroy()
     {
-        foreach (var activeTask in activeTasks)
-            activeTask.ClearListeners();
-
-        activeTasks.Clear();
-        taskDict.Clear();
+        ClearAllTasks();
     }
     
     /// <summary>
@@ -27,12 +25,6 @@ public partial class TaskManager : MonoBehaviour
     /// </summary>
     private bool BeginTask(TaskSO task, int index)
     {
-        if (IsActiveRecursive(task) || IsCompleted(task))
-        {
-            Debug.LogWarning("Attempting to start task that has been started before");
-            return false;
-        }
-
         // Create and register active task
         ActiveTask activeTask = new(task);
         activeTasks.Insert(index, activeTask);
@@ -52,12 +44,49 @@ public partial class TaskManager : MonoBehaviour
 
         return true;
     }
-    
+
     /// <summary>
     /// Begin a task. Cannot start a task that is already ongoing or completed
     /// </summary>
-    public void BeginTask(TaskSystem taskSystem) => 
+    public bool BeginTask(TaskSystem taskSystem, bool clearExisting = false)
+    {
+        // Optionally clear active tasks belonging to this system
+        if (clearExisting)
+        {
+            ClearTasksFromSystem(taskSystem);
+        }
+        
+        if (startedTaskSystems.Contains(taskSystem))
+        {
+            Debug.LogWarning("Attempting to start task system that has been started before");
+            return false;
+        }
+
+        // Start the system's initial tasks
         taskSystem.initialTasks.ForEach(task => BeginTask(task, activeTasks.Count));
+        startedTaskSystems.Add(taskSystem);
+        return true;
+    }
+
+    /// <summary>
+    /// End a currently Active Task
+    /// </summary>
+    public bool EndTask(TaskSO task)
+    {
+        if (!taskDict.TryGetValue(task, out ActiveTask activeTask))
+        {
+            Debug.LogWarning("Attempting to end task that is not active");
+        }
+        
+        int index = activeTasks.IndexOf(activeTask);
+        activeTasks.RemoveAt(index);
+        taskDict.Remove(task);
+        
+        activeTask.ClearListeners();
+        OnTaskRemoved.Invoke(new TaskEventData(index, task));
+        
+        return true;
+    }
     
     /// <summary>
     /// Mark task as completed for manual override
@@ -87,8 +116,8 @@ public partial class TaskManager : MonoBehaviour
         nextTasks.Reverse();
         foreach (var nextTask in nextTasks)
         {
-            //skip next task if already finished
-            if (IsCompleted(nextTask)) continue;
+            //skip next task if already finished or active
+            if (IsCompleted(nextTask) || IsActive(nextTask)) continue;
             
             if (!nextTask.requirePrevious || nextTask.previousTasks.Aggregate(true, (current, prevTask) => current && IsCompleted(prevTask)))
             {
@@ -99,14 +128,14 @@ public partial class TaskManager : MonoBehaviour
 
         return true;
     }
-
-    /// <summary>
-    /// Clear all the tasks waiting to be completed
-    /// </summary>
-    public void ClearActiveTasks()
+    
+    private void CollectAllTasksRecursive(TaskSO task, HashSet<TaskSO> collected)
     {
-        activeTasks.Clear();
-        taskDict.Clear();
+        if (task == null || !collected.Add(task))
+            return;
+
+        foreach (var next in task.nextTasks)
+            CollectAllTasksRecursive(next, collected);
     }
 
     /// <summary>
@@ -114,9 +143,49 @@ public partial class TaskManager : MonoBehaviour
     /// </summary>
     public void ClearAllTasks()
     {
+        // Clear listeners
+        foreach (var activeTask in activeTasks)
+        {
+            EndTask(activeTask.task);
+        }
+
+        // Clear lists
+        startedTaskSystems.Clear();
         completedTaskNames.Clear();
-        ClearActiveTasks();
+        activeTasks.Clear();
+        taskDict.Clear();
     }
+    
+    /// <summary>
+    /// Clears all active tasks that belong to the given task system
+    /// </summary>
+    private void ClearTasksFromSystem(TaskSystem taskSystem)
+    {
+        // Collect all tasks within the system recursively
+        HashSet<TaskSO> allTasksInSystem = new();
+        foreach (var initial in taskSystem.initialTasks)
+            CollectAllTasksRecursive(initial, allTasksInSystem);
+
+        // Find and remove matching active tasks
+        var tasksToRemove = activeTasks
+            .Where(active => allTasksInSystem.Contains(active.task))
+            .ToList();
+
+        foreach (var activeTask in tasksToRemove)
+        {
+            EndTask(activeTask.task);
+        }
+        
+        startedTaskSystems.Remove(taskSystem);
+
+        Debug.Log($"Cleared {tasksToRemove.Count} active tasks from system '{taskSystem.name}'.");
+    }
+    
+    /// <summary>
+    /// Check if all tasks are complete in task System
+    /// </summary>
+    public bool IsCompleted(TaskSystem taskSystem) => 
+        taskSystem.initialTasks.All(task => IsCompletedRecursive(task));
     
     /// <summary>
     /// Check if task has been completed by taskSO
@@ -153,6 +222,12 @@ public partial class TaskManager : MonoBehaviour
 
         return hasCompleted;
     }
+
+    /// <summary>
+    /// Check if any task in ongoing in task System
+    /// </summary>
+    public bool IsActive(TaskSystem taskSystem) => 
+        taskSystem.initialTasks.Any(task => IsActiveRecursive(task));
     
     /// <summary>
     /// Check if task in ongoing by taskSO
@@ -188,25 +263,4 @@ public partial class TaskManager : MonoBehaviour
 
         return isActive;
     }
-
-    /// <summary>
-    /// Get the info of a specific task if it is active
-    /// </summary>
-    public bool TryGetTaskInfo(TaskSO task, out TaskInfo info)
-    {
-        if (!taskDict.TryGetValue(task, out var activeTask))
-        {
-            info = default;
-            return false;
-        };
-        
-        info = new TaskInfo(activeTask);
-        return true;
-    }
-    
-    /// <summary>
-    /// Get the UI information of all the current tasks
-    /// </summary>
-    public List<TaskInfo> GetAllActiveTaskInfo() =>
-        activeTasks.Select((task)=>new TaskInfo(task)).ToList();
 }
