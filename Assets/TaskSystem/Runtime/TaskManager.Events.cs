@@ -2,6 +2,9 @@
 
 public partial class TaskManager
 {
+    /// <summary>
+    /// Data struct for Task related events
+    /// </summary>
     [System.Serializable]
     public struct TaskEventData
     {
@@ -15,6 +18,9 @@ public partial class TaskManager
         }
     }
 
+    /// <summary>
+    /// Data struct for Task requirement related events
+    /// </summary>S
     [System.Serializable]
     public struct RequirementEventData
     {

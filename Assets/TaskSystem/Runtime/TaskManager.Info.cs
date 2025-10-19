@@ -3,7 +3,10 @@ using System.Linq;
 
 public partial class TaskManager
 {
-    public class TaskInfo
+    /// <summary>
+    /// UI info for a given task
+    /// </summary>
+    public struct TaskInfo
     {
         public string description;
         public List<RequirementInfo> requirements;
@@ -17,7 +20,10 @@ public partial class TaskManager
         }
     }
 
-    public class RequirementInfo
+    /// <summary>
+    /// UI info for a given requirement
+    /// </summary>
+    public struct RequirementInfo
     {
         public string description;
         public bool completed;

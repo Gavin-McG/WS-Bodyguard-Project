@@ -10,8 +10,17 @@ public partial class TaskManager : MonoBehaviour
     private HashSet<TaskSO> completedTasks = new();
     private HashSet<string> completedTaskNames = new();
     
-    private List<ActiveTask> currentTasks = new();
+    private List<ActiveTask> activeTasks = new();
     private Dictionary<TaskSO, ActiveTask> taskDict = new();
+    
+    private void OnDestroy()
+    {
+        foreach (var activeTask in activeTasks)
+            activeTask.ClearListeners();
+
+        activeTasks.Clear();
+        taskDict.Clear();
+    }
     
     /// <summary>
     /// Begin a task by inserting at a specific position in the task list
@@ -23,15 +32,24 @@ public partial class TaskManager : MonoBehaviour
             Debug.LogWarning("Attempting to start task whose tree has not been completed");
             return false;
         }
-        
-        // Create new active task
+
+        // Create and register active task
         ActiveTask activeTask = new(task);
-        currentTasks.Insert(index, activeTask);
+        activeTasks.Insert(index, activeTask);
         taskDict.Add(task, activeTask);
-        
-        // Set active task listener
-        activeTask.AddCompleteListener(() => CompleteTask(activeTask.task));
-        
+
+        // Listen for task completion
+        activeTask.OnTaskCompleted.AddListener(() => CompleteTask(activeTask.task));
+
+        // Listen for individual requirement completions
+        activeTask.OnRequirementCompleted.AddListener((requirementIndex) =>
+        {
+            OnRequirementCompleted.Invoke(new RequirementEventData(index, requirementIndex, task));
+        });
+
+        // Notify UI that a task was added
+        OnTaskAdded.Invoke(new TaskEventData(index, task));
+
         return true;
     }
     
@@ -39,7 +57,7 @@ public partial class TaskManager : MonoBehaviour
     /// Begin a task. Cannot start a task that is already ongoing
     /// </summary>
     public bool BeginTask(TaskSO task) => 
-        BeginTask(task, currentTasks.Count);
+        BeginTask(task, activeTasks.Count);
     
     /// <summary>
     /// Mark task as completed for manual override
@@ -52,17 +70,19 @@ public partial class TaskManager : MonoBehaviour
             Debug.LogWarning("Attempting to complete task that has not begun");
             return false;
         }
-        
-        // Clear completed task from task list
-        int index = currentTasks.IndexOf(activeTask);
+
+        int index = activeTasks.IndexOf(activeTask);
         taskDict.Remove(task);
-        currentTasks.RemoveAt(index);
-        
-        // Add task to completed list
+        activeTasks.RemoveAt(index);
+        activeTask.ClearListeners();
+
         completedTasks.Add(task);
         completedTaskNames.Add(task.name);
-        
-        // Add next tasks to list
+
+        // Fire event for UI
+        OnTaskCompleted.Invoke(new TaskEventData(index, task));
+
+        // Add next tasks in reverse order
         var nextTasks = task.nextTasks;
         nextTasks.Reverse();
         foreach (var nextTask in nextTasks)
@@ -76,7 +96,7 @@ public partial class TaskManager : MonoBehaviour
     /// </summary>
     public void ClearActiveTasks()
     {
-        currentTasks.Clear();
+        activeTasks.Clear();
         taskDict.Clear();
     }
 
@@ -164,5 +184,5 @@ public partial class TaskManager : MonoBehaviour
     /// Get the UI information of all the current tasks
     /// </summary>
     public List<TaskInfo> GetActiveTaskInfo() =>
-        currentTasks.Select((task)=>new TaskInfo(task)).ToList();
+        activeTasks.Select((task)=>new TaskInfo(task)).ToList();
 }
