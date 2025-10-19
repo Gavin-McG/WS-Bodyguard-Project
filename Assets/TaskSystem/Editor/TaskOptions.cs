@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Unity.GraphToolkit.Editor;
+using UnityEngine;
 
 public class TaskOptions
 {
@@ -16,7 +17,7 @@ public class TaskOptions
 
     public TaskSO GetTask()
     {
-        TaskSO task = new TaskSO();
+        TaskSO task = ScriptableObject.CreateInstance<TaskSO>();
         nameOption.TryGetValue(out string name);
         task.name = name;
         

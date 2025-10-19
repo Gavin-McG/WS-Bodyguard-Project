@@ -11,6 +11,6 @@ public class TaskSO : ScriptableObject
     public class Requirement
     {
         [SerializeField] public string description;
-        [SerializeField] public EventSO eventSO;
+        [SerializeField] public RequirementSO requirementSO;
     }
 }

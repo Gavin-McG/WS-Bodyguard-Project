@@ -45,9 +45,9 @@ MonoBehaviour:
         m_LocalSubgraphs: []
         m_LastKnownBounds:
           serializedVersion: 2
-          x: 192
-          y: 82
-          width: 1049
+          x: 222
+          y: 83
+          width: 1062
           height: 469
         m_GraphElementMetaData:
         - m_Guid:
@@ -119,7 +119,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: f336ee19810326c829934e025f530208
         m_Version: 2
-        m_Position: {x: 192.28766, y: 136.56165}
+        m_Position: {x: 222.01883, y: 132.55937}
         m_Title: 
         m_Tooltip: 
         m_NodePreviewModel:
@@ -264,10 +264,10 @@ MonoBehaviour:
         m_InputConstantsById:
           m_KeyList:
           - __option_Description
-          - __option_Event
+          - __option_Requirement
           m_ValueList:
           - rid: 5845767227511144705
-          - rid: 5845767227511144706
+          - rid: 5845767306773790789
         m_InputPortInfos:
           expandedPortsById:
             m_KeyList: []
@@ -289,10 +289,6 @@ MonoBehaviour:
       type: {class: 'Constant`1[[System.String, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
       data:
         m_Value: Fulfill this Requirement!!
-    - rid: 5845767227511144706
-      type: {class: 'Constant`1[[EventSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
-      data:
-        m_Value: {fileID: 11400000, guid: 0a2f524cf72bbf449881fd88946411ee, type: 2}
     - rid: 5845767227511144707
       type: {class: RequirementNode, ns: , asm: Assembly-CSharp-Editor}
       data: 
@@ -306,7 +302,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: 5deddfe826fa6a30aa324c4dbeeb25c4
         m_Version: 2
-        m_Position: {x: 937.6524, y: 81.99499}
+        m_Position: {x: 933.685, y: 83.31748}
         m_Title: TaskNode
         m_Tooltip: 
         m_NodePreviewModel:
@@ -370,10 +366,10 @@ MonoBehaviour:
         m_InputConstantsById:
           m_KeyList:
           - __option_Description
-          - __option_Event
+          - __option_Requirement
           m_ValueList:
           - rid: 5845767227511144721
-          - rid: 5845767227511144722
+          - rid: 5845767306773790790
         m_InputPortInfos:
           expandedPortsById:
             m_KeyList: []
@@ -398,10 +394,6 @@ MonoBehaviour:
       type: {class: 'Constant`1[[System.String, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
       data:
         m_Value: Fulfill this Requirement again!!
-    - rid: 5845767227511144722
-      type: {class: 'Constant`1[[EventSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
-      data:
-        m_Value: {fileID: 11400000, guid: 0a2f524cf72bbf449881fd88946411ee, type: 2}
     - rid: 5845767227511144723
       type: {class: UserContextNodeModelImp, ns: Unity.GraphToolkit.Editor.Implementation, asm: Unity.GraphToolkit.Editor}
       data:
@@ -497,10 +489,10 @@ MonoBehaviour:
         m_InputConstantsById:
           m_KeyList:
           - __option_Description
-          - __option_Event
+          - __option_Requirement
           m_ValueList:
           - rid: 5845767229517594625
-          - rid: 5845767229517594626
+          - rid: 5845767306773790791
         m_InputPortInfos:
           expandedPortsById:
             m_KeyList: []
@@ -522,10 +514,18 @@ MonoBehaviour:
       type: {class: 'Constant`1[[System.String, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
       data:
         m_Value: This one has a second requirment!
-    - rid: 5845767229517594626
-      type: {class: 'Constant`1[[EventSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
-      data:
-        m_Value: {fileID: 11400000, guid: 8ecfe7f3243ff2a48b11426ed8f8fef7, type: 2}
     - rid: 5845767229517594627
       type: {class: RequirementNode, ns: , asm: Assembly-CSharp-Editor}
       data: 
+    - rid: 5845767306773790789
+      type: {class: 'Constant`1[[RequirementSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
+      data:
+        m_Value: {fileID: 11400000, guid: 0a2f524cf72bbf449881fd88946411ee, type: 2}
+    - rid: 5845767306773790790
+      type: {class: 'Constant`1[[RequirementSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
+      data:
+        m_Value: {fileID: 11400000, guid: 0a2f524cf72bbf449881fd88946411ee, type: 2}
+    - rid: 5845767306773790791
+      type: {class: 'Constant`1[[RequirementSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
+      data:
+        m_Value: {fileID: 11400000, guid: 8ecfe7f3243ff2a48b11426ed8f8fef7, type: 2}
