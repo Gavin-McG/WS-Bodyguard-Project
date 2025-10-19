@@ -46,9 +46,9 @@ MonoBehaviour:
         m_LastKnownBounds:
           serializedVersion: 2
           x: 222
-          y: 83
-          width: 1062
-          height: 469
+          y: 65
+          width: 995
+          height: 491
         m_GraphElementMetaData:
         - m_Guid:
             m_Value0: 14422218709721298675
@@ -168,7 +168,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: 686fb3db631a2c5485995b6857ca2305
         m_Version: 2
-        m_Position: {x: 509.93213, y: 83.975365}
+        m_Position: {x: 449.73114, y: 64.844925}
         m_Title: 
         m_Tooltip: 
         m_NodePreviewModel:
@@ -304,7 +304,7 @@ MonoBehaviour:
           serializedVersion: 2
           Hash: 5deddfe826fa6a30aa324c4dbeeb25c4
         m_Version: 2
-        m_Position: {x: 933.685, y: 83.31748}
+        m_Position: {x: 867.2227, y: 65.827415}
         m_Title: TaskNode
         m_Tooltip: 
         m_NodePreviewModel:

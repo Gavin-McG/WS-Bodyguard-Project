@@ -15,7 +15,7 @@ public partial class TaskManager
         public TaskInfo(ActiveTask activeTask)
         {
             this.task = activeTask.task;
-            this.description = activeTask.task.name;
+            this.description = activeTask.task.description;
             this.requirements = activeTask.task.requirements
                 .Select(((req, i) => new RequirementInfo(req, activeTask.completed[i])))
                 .ToList();

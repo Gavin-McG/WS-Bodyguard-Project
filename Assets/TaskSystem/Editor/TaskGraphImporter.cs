@@ -31,8 +31,11 @@ internal class TaskGraphImporter : ScriptedImporter
             
             if (taskNode is BeginTaskNode node)
             {
-                ctx.AddObjectToAsset("Main", task); // TODO Add texture
-                ctx.SetMainObject(task);
+                TaskSystem system = ScriptableObject.CreateInstance<TaskSystem>();
+                system.Init(task);
+                ctx.AddObjectToAsset("Main", system); // TODO Add texture
+                ctx.SetMainObject(system);
+                DestroyImmediate(task);
             }
             else 
             {

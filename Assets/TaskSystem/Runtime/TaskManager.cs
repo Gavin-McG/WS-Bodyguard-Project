@@ -56,8 +56,8 @@ public partial class TaskManager : MonoBehaviour
     /// <summary>
     /// Begin a task. Cannot start a task that is already ongoing or completed
     /// </summary>
-    public bool BeginTask(TaskSO task) => 
-        BeginTask(task, activeTasks.Count);
+    public void BeginTask(TaskSystem taskSystem) => 
+        taskSystem.initialTasks.ForEach(task => BeginTask(task, activeTasks.Count));
     
     /// <summary>
     /// Mark task as completed for manual override
