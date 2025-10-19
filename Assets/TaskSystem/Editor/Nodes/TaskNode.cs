@@ -32,9 +32,10 @@ public class TaskNode : ContextNode, ITaskNode
 
     public TaskSO GetTask() => task;
 
-    public void AssignNextTasks()
+    public void AssignRelativeTasks()
     {
         task.nextTasks = TaskGraphUtility.GetConnectedTasks(taskOutputPort);
+        task.previousTasks = TaskGraphUtility.GetConnectedTasks(taskInputPort);
     }
 
     private void AssignRequirements()

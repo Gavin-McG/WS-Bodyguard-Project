@@ -8,14 +8,16 @@ public partial class TaskManager
     /// </summary>
     public struct TaskInfo
     {
+        public TaskSO task;
         public string description;
         public List<RequirementInfo> requirements;
 
-        public TaskInfo(ActiveTask task)
+        public TaskInfo(ActiveTask activeTask)
         {
-            this.description = task.task.name;
-            this.requirements = task.task.requirements
-                .Select(((req, i) => new RequirementInfo(req, task.completed[i])))
+            this.task = activeTask.task;
+            this.description = activeTask.task.name;
+            this.requirements = activeTask.task.requirements
+                .Select(((req, i) => new RequirementInfo(req, activeTask.completed[i])))
                 .ToList();
         }
     }

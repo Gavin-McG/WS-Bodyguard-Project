@@ -44,7 +44,7 @@ internal class TaskGraphImporter : ScriptedImporter
         //assign next task references between nodes
         foreach (var taskNode in taskNodes)
         {
-            taskNode.AssignNextTasks();
+            taskNode.AssignRelativeTasks();
         }
     }
 }

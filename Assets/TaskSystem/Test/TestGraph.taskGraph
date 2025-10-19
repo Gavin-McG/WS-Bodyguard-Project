@@ -178,9 +178,11 @@ MonoBehaviour:
           m_KeyList:
           - __option_Name
           - __option_Description
+          - __option_Require Previous
           m_ValueList:
           - rid: 5845767227511144700
           - rid: 5845767227511144701
+          - rid: 5845767306773790796
         m_InputPortInfos:
           expandedPortsById:
             m_KeyList: []
@@ -312,9 +314,11 @@ MonoBehaviour:
           m_KeyList:
           - __option_Name
           - __option_Description
+          - __option_Require Previous
           m_ValueList:
           - rid: 5845767227511144717
           - rid: 5845767227511144718
+          - rid: 5845767306773790797
         m_InputPortInfos:
           expandedPortsById:
             m_KeyList: []
@@ -529,3 +533,11 @@ MonoBehaviour:
       type: {class: 'Constant`1[[RequirementSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
       data:
         m_Value: {fileID: 11400000, guid: 8ecfe7f3243ff2a48b11426ed8f8fef7, type: 2}
+    - rid: 5845767306773790796
+      type: {class: 'Constant`1[[System.Boolean, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
+      data:
+        m_Value: 0
+    - rid: 5845767306773790797
+      type: {class: 'Constant`1[[System.Boolean, mscorlib]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
+      data:
+        m_Value: 0

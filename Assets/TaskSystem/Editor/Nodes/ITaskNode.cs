@@ -6,5 +6,5 @@ public interface ITaskNode
 
     public TaskSO GetTask();
 
-    public void AssignNextTasks();
+    public void AssignRelativeTasks();
 }

@@ -27,9 +27,9 @@ public partial class TaskManager : MonoBehaviour
     /// </summary>
     private bool BeginTask(TaskSO task, int index)
     {
-        if (IsActiveRecursive(task))
+        if (IsActiveRecursive(task) || IsCompleted(task))
         {
-            Debug.LogWarning("Attempting to start task whose tree has not been completed");
+            Debug.LogWarning("Attempting to start task that has been started before");
             return false;
         }
 
@@ -54,7 +54,7 @@ public partial class TaskManager : MonoBehaviour
     }
     
     /// <summary>
-    /// Begin a task. Cannot start a task that is already ongoing
+    /// Begin a task. Cannot start a task that is already ongoing or completed
     /// </summary>
     public bool BeginTask(TaskSO task) => 
         BeginTask(task, activeTasks.Count);
@@ -86,7 +86,16 @@ public partial class TaskManager : MonoBehaviour
         var nextTasks = task.nextTasks;
         nextTasks.Reverse();
         foreach (var nextTask in nextTasks)
-            BeginTask(nextTask, index);
+        {
+            //skip next task if already finished
+            if (IsCompleted(nextTask)) continue;
+            
+            if (!nextTask.requirePrevious || nextTask.previousTasks.Aggregate(true, (current, prevTask) => current && IsCompleted(prevTask)))
+            {
+                // Begin next if previous tasks aren't required or is all previous tasks are complete
+                BeginTask(nextTask, index);
+            }
+        }
 
         return true;
     }
@@ -112,22 +121,22 @@ public partial class TaskManager : MonoBehaviour
     /// <summary>
     /// Check if task has been completed by taskSO
     /// </summary>
-    public bool HasCompleted(TaskSO task) => completedTasks.Contains(task);
+    public bool IsCompleted(TaskSO task) => completedTasks.Contains(task);
     
     /// <summary>
     /// Check if task has been completed by name
     /// </summary>
-    public bool HasCompleted(string taskName) => completedTaskNames.Contains(taskName);
+    public bool IsCompleted(string taskName) => completedTaskNames.Contains(taskName);
 
     /// <summary>
     /// Check if a task and all its subsequent tasks have been completed
     /// </summary>
-    public bool HasCompletedRecursive(TaskSO task)
+    public bool IsCompletedRecursive(TaskSO task)
     {
-        return HasCompletedRecursive(task, new HashSet<TaskSO>());
+        return IsCompletedRecursive(task, new HashSet<TaskSO>());
     }
 
-    private bool HasCompletedRecursive(TaskSO task, HashSet<TaskSO> visited)
+    private bool IsCompletedRecursive(TaskSO task, HashSet<TaskSO> visited)
     {
         if (task == null) return true;
 
@@ -138,9 +147,9 @@ public partial class TaskManager : MonoBehaviour
             return true; // or false depending on desired behavior
         }
 
-        bool hasCompleted = HasCompleted(task);
+        bool hasCompleted = IsCompleted(task);
         foreach (var nextTask in task.nextTasks)
-            hasCompleted = hasCompleted && HasCompletedRecursive(nextTask, visited);
+            hasCompleted = hasCompleted && IsCompletedRecursive(nextTask, visited);
 
         return hasCompleted;
     }

@@ -12,7 +12,7 @@ public class BeginTaskNode : Node, ITaskNode
 
     protected override void OnDefineOptions(IOptionDefinitionContext context)
     {
-        taskOptions = TaskOptions.AddOptions(context);
+        taskOptions = TaskOptions.AddOptions(context, false);
     }
 
     protected override void OnDefinePorts(IPortDefinitionContext context)
@@ -28,7 +28,7 @@ public class BeginTaskNode : Node, ITaskNode
 
     public TaskSO GetTask() => task;
 
-    public void AssignNextTasks()
+    public void AssignRelativeTasks()
     {
         task.nextTasks = TaskGraphUtility.GetConnectedTasks(taskOutputPort);
     }

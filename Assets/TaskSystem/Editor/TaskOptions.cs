@@ -6,12 +6,14 @@ public class TaskOptions
 {
     public INodeOption nameOption;
     public INodeOption descriptionOption;
+    public INodeOption requirePrevious;
     
-    public static TaskOptions AddOptions(Node.IOptionDefinitionContext context)
+    public static TaskOptions AddOptions(Node.IOptionDefinitionContext context, bool includePrevious = true)
     {
         TaskOptions taskOptions = new TaskOptions();
         taskOptions.nameOption = context.AddOption("Name", typeof(string)).Build();
         taskOptions.descriptionOption = context.AddOption("Description", typeof(string)).Build();
+        taskOptions.requirePrevious = includePrevious ? context.AddOption("Require Previous", typeof(bool)).Build() : null;
         return taskOptions;
     }
 
@@ -24,6 +26,8 @@ public class TaskOptions
         descriptionOption.TryGetValue(out task.description);
         task.requirements = new List<TaskSO.Requirement>();
         task.nextTasks = new List<TaskSO>();
+        task.previousTasks = new List<TaskSO>();
+        requirePrevious?.TryGetValue(out task.requirePrevious);
         
         return task;
     }
