@@ -1,5 +1,6 @@
 using NUnit.Framework.Internal.Filters;
 using System.Collections;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,13 +8,13 @@ public class RhythmGameManager : MonoBehaviour
 {
 
     //please note, i do NOT have any experience creating rhythm games.
-    //this is just A way that i came up with implementing it.
+    //this is just A way that i came up with implementing it. fully guessing here
     //feel free to change it
 
     public static RhythmGameManager instance;
 
-    float game_start_time = 0f;
-    public float Game_Time;
+    double game_start_time = 0f;
+    public double Game_Time;
 
     bool game_active = true;
 
@@ -23,12 +24,18 @@ public class RhythmGameManager : MonoBehaviour
     [SerializeField] Indicator right_indicator;
 
     [SerializeField] Transform map_movement;
-    [SerializeField] GameObject note_prefab;
+    [SerializeField] GameObject[] note_prefab; //left down up right
 
     [SerializeField] float grace_period;
+    [SerializeField] float early_time; //this is to add a miss to prevent the spamming of all notes
 
-    [SerializeField] float bpm;
-    float speed_distance_modifier;
+    [SerializeField] float bpm = 60f;
+    [SerializeField] float note_speed = 1f; //literally multiply everything noterelated by this to maintain the beats
+
+    [SerializeField] TMP_Text miss_text;
+    int misses = 0;
+
+    AudioSettings audio_settings;
 
     int progression = 0; //the current array of the note in the map
     public Note[] Current_Map;
@@ -42,7 +49,7 @@ public class RhythmGameManager : MonoBehaviour
         Right
     }
 
-    float[] QueuedInputs ={ -1, -1, -1, 1}; //left down up right, this will contain -1 if no queued inputs and the time the queued input was hit if there is
+    double[] QueuedInputs ={ -1, -1, -1, 1}; //left down up right, this will contain -1 if no queued inputs and the time the queued input was hit if there is
 
 
 
@@ -50,60 +57,26 @@ public class RhythmGameManager : MonoBehaviour
     void Start()
     {
         instance = this;
-        game_start_time = Time.time;
+        game_start_time = AudioSettings.dspTime;
 
-        speed_distance_modifier = bpm / 60;
-
-
-        GenerateStartingRandomSong(10);
+        GenerateStartingRandomSong(15);
 
     }
 
     void GenerateStartingRandomSong(int n)
     {
 
-        Note[] notes = new Note[(int) (n * 2)];
+        Note[] notes = new Note[n];
 
-        for (int i = 1; i <= n * 2; i++)
+        for (int i = 1; i <= n; i++)
         {
 
-            Direction new_note_direction = (Direction) Random.Range(0, 4);
+            int new_note_direction = Random.Range(0, 4);
 
-            Note new_note = Instantiate(note_prefab, new Vector2(((float)((float) new_note_direction) * 2) - 3, -((int)(i / 2))), Quaternion.identity).GetComponent<Note>();
-            
-            switch ((int)new_note_direction) {
-
-                case 0:
-
-                    new_note.transform.Rotate(new Vector3(0, 0, 90));
-                    new_note.direction = Direction.Left;
-                    
-                    break;
-
-                case 1:
-
-                    new_note.transform.Rotate(new Vector3(0, 0, 180));
-                    new_note.direction = Direction.Down;
-
-                    break;
-
-                case 2:
-
-                    new_note.transform.Rotate(new Vector3(0, 0, 0));
-                    new_note.direction = Direction.Up;
-
-                    break;
-
-                case 3:
-
-                    new_note.transform.Rotate(new Vector3(0, 0, -90));
-                    new_note.direction = Direction.Right;
-
-                    break;
-            }
+            Note new_note = Instantiate(note_prefab[new_note_direction], new Vector2(((float) new_note_direction * 2) - 3, -i * note_speed * 60f / bpm), Quaternion.identity).GetComponent<Note>();
 
             new_note.transform.SetParent(map_movement);
-            new_note.TimeToHit = (int) (i / 2);
+            new_note.TimeToHit = i * note_speed * 60f / bpm;
 
             notes[i - 1] = new_note;
 
@@ -118,20 +91,32 @@ public class RhythmGameManager : MonoBehaviour
     {
         if (game_active)
         {
-            Game_Time = (Time.time - game_start_time) * speed_distance_modifier;
+            Game_Time = (AudioSettings.dspTime - game_start_time) * note_speed;
 
             //manage hit
 
             //manage queued inputs
 
             int i = progression;
+
+            if (i >= Current_Map.Length)
+            {
+                OnSongEnd();
+                return;
+            }
             float current_input_time = Current_Map[progression].TimeToHit;
+
             while (Current_Map[i].TimeToHit < Game_Time + grace_period)
             {
 
-                if (!Current_Map[i].hit && Mathf.Abs(QueuedInputs[(int)Current_Map[i].direction] - Current_Map[i].TimeToHit) < grace_period) //check if the next note is a hit
+                if (!Current_Map[i].hit && Mathf.Abs((float)(QueuedInputs[(int)Current_Map[i].direction] - Current_Map[i].TimeToHit)) <= early_time) //check if the next note is a hit
                 {
+
                     Current_Map[i].Hit();
+
+                    if (!(Mathf.Abs((float)(QueuedInputs[(int)Current_Map[i].direction] - Current_Map[i].TimeToHit)) <= grace_period))
+                        OnMiss();
+
                     progression = i + 1;
                 }
 
@@ -151,18 +136,33 @@ public class RhythmGameManager : MonoBehaviour
 
             //check if the current note is outside the ability to actually hit within the grace period-- if it is, the note is missed
 
-            if (Game_Time - Current_Map[progression].TimeToHit > grace_period)
+            if (Game_Time - Current_Map[progression].TimeToHit > grace_period * note_speed)
             {
                 progression++;
 
                 if (!Current_Map[progression].hit)
-                    Debug.Log("you missed");
-
-                    //miss code here
+                {
+                    OnMiss();
+                }
+                
             }
 
-            map_movement.position = new Vector2(map_movement.position.x, Game_Time);
+            map_movement.position = new Vector2(map_movement.position.x, (float) Game_Time);
         }
+    }
+
+    void OnMiss()
+    {
+        misses++;
+
+        miss_text.text = "Misses: " + misses;
+        Debug.Log("you missed!");
+        //
+    }
+
+    void OnSongEnd()
+    {
+        //
     }
 
     void Start_Game() //this function will eventually be the function that starts the rhythm section.

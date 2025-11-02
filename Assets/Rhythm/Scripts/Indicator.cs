@@ -7,6 +7,9 @@ public class Indicator : MonoBehaviour
     float timer;
     SpriteRenderer spriteRenderer;
 
+    [SerializeField] Sprite hit_sprite;
+    [SerializeField] Sprite base_sprite;
+
     private void Start()
     {
         
@@ -26,12 +29,12 @@ public class Indicator : MonoBehaviour
     public void Indicate()
     {
         timer = indication_time;
-        spriteRenderer.color = Color.red; //color can later be changed by a serializedfield component for each
+        spriteRenderer.sprite = hit_sprite; //color can later be changed by a serializedfield component for each
 
     }
 
     public void DeIndicate()
     {
-        spriteRenderer.color = Color.white;
+        spriteRenderer.sprite = base_sprite;
     }
 }

@@ -24,8 +24,8 @@ public class Note : MonoBehaviour
     {
 
         TESTtime_to_hit.text = (TimeToHit - RhythmGameManager.instance.Game_Time + "").Substring(0, Math.Min(3, (TimeToHit - RhythmGameManager.instance.Game_Time + "").Length));
-    }
 
+    }
     public void Hit()
     {
         Debug.Log("whoopee");
