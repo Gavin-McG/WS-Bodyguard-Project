@@ -1,7 +1,7 @@
 using UnityEngine;
 using WolverineSoft.DialogueSystem;
 
-public class DialogueInteraction : InteractionResponse
+public class DialogueResponse : InteractionResponse
 {
     [SerializeField] DialogueManager dialogueManager;
     [SerializeField] DialogueAsset dialogueAsset;
