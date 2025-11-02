@@ -1,4 +1,5 @@
-﻿using UnityEngine.Events;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 public partial class TaskManager
 {
@@ -39,8 +40,8 @@ public partial class TaskManager
     [System.Serializable] public class TaskEvent : UnityEvent<TaskEventData> { }
     [System.Serializable] public class RequirementEvent : UnityEvent<RequirementEventData> { }
 
-    public TaskEvent OnTaskAdded = new();
-    public TaskEvent OnTaskCompleted = new();
-    public TaskEvent OnTaskRemoved = new();
-    public RequirementEvent OnRequirementCompleted = new();
+    [HideInInspector] public TaskEvent OnTaskAdded = new();
+    [HideInInspector] public TaskEvent OnTaskCompleted = new();
+    [HideInInspector] public TaskEvent OnTaskRemoved = new();
+    [HideInInspector] public RequirementEvent OnRequirementCompleted = new();
 }
