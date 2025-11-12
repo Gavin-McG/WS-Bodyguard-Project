@@ -249,12 +249,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 108652375}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1885772509}
+  m_Father: {fileID: 1388157137}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &131068706
 GameObject:
@@ -416,7 +416,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 135214321}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -425,7 +425,7 @@ Transform:
   - {fileID: 824438338}
   - {fileID: 571752685}
   - {fileID: 64744036}
-  m_Father: {fileID: 1885772509}
+  m_Father: {fileID: 1388157137}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &227632204
 GameObject:
@@ -596,7 +596,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 131068707}
-  m_Father: {fileID: 1885772509}
+  m_Father: {fileID: 1388157137}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -984,6 +984,40 @@ MonoBehaviour:
   indication_time: 0.1
   hit_sprite: {fileID: 21300000, guid: fb22a4fc5c3ea544198d239f7a395b79, type: 3}
   base_sprite: {fileID: 21300000, guid: 7c3380c81de3ff3449e188047b14d797, type: 3}
+--- !u!1 &1388157136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1388157137}
+  m_Layer: 0
+  m_Name: Minigame
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1388157137
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388157136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 135214322}
+  - {fileID: 108652376}
+  - {fileID: 247924047}
+  m_Father: {fileID: 1885772509}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1425069987
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,9 +1128,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 135214322}
-  - {fileID: 108652376}
-  - {fileID: 247924047}
+  - {fileID: 1388157137}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1885772510
@@ -1142,6 +1174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   Game_Time: 0
+  rhythm_minigame: {fileID: 1388157136}
   left_indicator: {fileID: 824438340}
   up_indicator: {fileID: 1081801771}
   down_indicator: {fileID: 571752687}
@@ -1152,12 +1185,13 @@ MonoBehaviour:
   - {fileID: 377689081536786353, guid: b25db97e26711cf448c14ef3baf3a8d8, type: 3}
   - {fileID: 377689081536786353, guid: 429fabb519382f241a00531dc94b384b, type: 3}
   - {fileID: 377689081536786353, guid: 0a188262db59f8544b3f605299dc2fc9, type: 3}
-  grace_period: 0.5
-  early_time: 1
+  grace_period: 0.25
+  early_time: 0.7
   bpm: 120
   note_speed: 3
   miss_text: {fileID: 131068708}
   Current_Map: []
+  current_song_data: {fileID: 11400000, guid: b13ef1aaaa98cc74e9fa6a0aaa23a757, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

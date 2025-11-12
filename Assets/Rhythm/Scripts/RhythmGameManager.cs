@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RhythmGameManager : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class RhythmGameManager : MonoBehaviour
 
     bool game_active = true;
 
+    public static UnityEvent<int> end_song;
+
+    [SerializeField] GameObject rhythm_minigame;
     [SerializeField] Indicator left_indicator;
     [SerializeField] Indicator up_indicator;
     [SerializeField] Indicator down_indicator;
@@ -40,6 +44,8 @@ public class RhythmGameManager : MonoBehaviour
     int progression = 0; //the current array of the note in the map
     public Note[] Current_Map;
 
+    public SongData current_song_data;
+
 
     public enum Direction
     {
@@ -56,10 +62,26 @@ public class RhythmGameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        Start_Game(current_song_data);
+    }
+
+    void Start_Game(SongData data) //this function will eventually be the function that starts the rhythm section.
+    {
+
+        map_movement.position = Vector3.zero;
         instance = this;
         game_start_time = AudioSettings.dspTime;
 
-        GenerateStartingRandomSong(15);
+        rhythm_minigame.SetActive(true);
+
+
+        bpm = data.bpm;
+        note_speed = data.note_speed;
+
+        GenerateStartingRandomSong(data.song_length);
+
+        game_start_time = AudioSettings.dspTime;
 
     }
 
@@ -99,6 +121,7 @@ public class RhythmGameManager : MonoBehaviour
 
             int i = progression;
 
+
             if (i >= Current_Map.Length)
             {
                 OnSongEnd();
@@ -109,15 +132,24 @@ public class RhythmGameManager : MonoBehaviour
             while (Current_Map[i].TimeToHit < Game_Time + grace_period)
             {
 
-                if (!Current_Map[i].hit && Mathf.Abs((float)(QueuedInputs[(int)Current_Map[i].direction] - Current_Map[i].TimeToHit)) <= early_time) //check if the next note is a hit
+                int ok = -1;
+
+                if (!Current_Map[i].hit && Mathf.Abs((float)(QueuedInputs[(int)Current_Map[i].direction] - Current_Map[i].TimeToHit)) <= grace_period) //check if the next note is a hit
                 {
 
+                    ok = (int) Current_Map[i].direction;
                     Current_Map[i].Hit();
-
-                    if (!(Mathf.Abs((float)(QueuedInputs[(int)Current_Map[i].direction] - Current_Map[i].TimeToHit)) <= grace_period))
-                        OnMiss();
-
+                    Debug.Log("nice hit");
                     progression = i + 1;
+
+                }
+
+                for (int j = 0; j < 4; j++)
+                {
+                    if (QueuedInputs[j] != -1 && j != ok)
+                    {
+                        OnMiss();
+                    }
                 }
 
                 i++;
@@ -132,9 +164,12 @@ public class RhythmGameManager : MonoBehaviour
             {
                 QueuedInputs[i] = -1;
             }
-            
+
 
             //check if the current note is outside the ability to actually hit within the grace period-- if it is, the note is missed
+
+            if (progression >= Current_Map.Length)
+                return;
 
             if (Game_Time - Current_Map[progression].TimeToHit > grace_period * note_speed)
             {
@@ -162,12 +197,11 @@ public class RhythmGameManager : MonoBehaviour
 
     void OnSongEnd()
     {
-        //
-    }
+        end_song.Invoke(misses);
 
-    void Start_Game() //this function will eventually be the function that starts the rhythm section.
-    {
-        game_start_time = Time.time;
+        rhythm_minigame.SetActive(false);
+
+        Debug.Log("song over");
     }
 
     //inputs below
