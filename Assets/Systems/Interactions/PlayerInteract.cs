@@ -7,8 +7,9 @@ using UnityEngine.InputSystem;
 public class PlayerInteract : MonoBehaviour
 {
     [SerializeField] InputActionReference interactAction;
+    [SerializeField] SpriteRenderer indicatorSprite;
     
-    private HashSet<Interactible> nearbyObjects = new HashSet<Interactible>();
+    private HashSet<Interaction> nearbyObjects = new HashSet<Interaction>();
 
     private void OnEnable()
     {
@@ -19,22 +20,41 @@ public class PlayerInteract : MonoBehaviour
     {
         interactAction.action.performed -= TriggerNearbyObjects;
     }
+
+	private void Update()
+    {
+        indicatorSprite.sprite = GetClosest()?.indicator;
+    }
     
-    public void RegisterObject(Interactible obj)
+    public void RegisterObject(Interaction obj)
     {
         nearbyObjects.Add(obj);
     }
 
-    public void UnregisterObject(Interactible obj)
+    public void UnregisterObject(Interaction obj)
     {
         nearbyObjects.Remove(obj);
     }
 
     private void TriggerNearbyObjects(InputAction.CallbackContext context)
     {
-        foreach (Interactible obj in nearbyObjects)
+        GetClosest()?.TriggerResponses();
+    }
+
+    private Interaction GetClosest()
+    {
+        Interaction closest = null;
+        float closestDistance = float.MaxValue;
+        foreach (Interaction obj in nearbyObjects)
         {
-            obj.TriggerResponses();
+            float distance = Vector3.Distance(obj.transform.position, transform.position);
+            if (closest == null || distance < closestDistance)
+            {
+                closest = obj;
+                closestDistance = distance;
+            }
         }
+        
+        return closest;
     }
 }

@@ -2,23 +2,30 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactible : MonoBehaviour
+[RequireComponent(typeof(Collider))]
+public class Interaction : MonoBehaviour
 {
-    [SerializeField] List<InteractionResponse> responses = new List<InteractionResponse>();
-    
-    PlayerInteract currentPlayer;
-    
+    [SerializeField] public Sprite indicator;
+
+    private List<InteractionResponse> responses = new List<InteractionResponse>();
+    private PlayerInteract currentPlayer;
+
+    private void Awake()
+    {
+        responses.AddRange(GetComponents<InteractionResponse>());
+    }
+
     public void TriggerResponses()
     {
-        foreach (InteractionResponse response in responses)
+        foreach (var response in responses)
         {
             response.TryTriggerResponse();
         }
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
-        PlayerInteract playerInteract = other.GetComponent<PlayerInteract>();
+        var playerInteract = other.GetComponent<PlayerInteract>();
         if (playerInteract != null)
         {
             currentPlayer = playerInteract;
@@ -28,7 +35,7 @@ public class Interactible : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        PlayerInteract playerInteract = other.GetComponent<PlayerInteract>();
+        var playerInteract = other.GetComponent<PlayerInteract>();
         if (playerInteract != null)
         {
             currentPlayer = null;
