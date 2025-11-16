@@ -7,6 +7,11 @@ public class TeleportObjectResponse : InteractionResponse
 
     protected override void TriggerResponse()
     {
-        objectToTeleport.transform.position = teleportPosition.position;
+        Rigidbody rb = objectToTeleport.GetComponent<Rigidbody>();
+        
+        if (rb == null)
+            objectToTeleport.transform.position = teleportPosition.position;
+        else 
+            rb.MovePosition(objectToTeleport.transform.position);
     }
 }

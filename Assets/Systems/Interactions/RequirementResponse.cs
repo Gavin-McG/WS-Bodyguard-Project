@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RequirementResponse : InteractionResponse
 {
-    RequirementSO requirement;
+    [SerializeField] private RequirementSO requirement;
 
     protected override void TriggerResponse()
     {
