@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 98840cbac8ea72a4cb27bfca20d0439f
+guid: d8a493450f035fd49bd754741ebc854f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5140584026896089850
-    second: StairsRight_0
+      213: -6373251369653333995
+    second: DoorLeft-Ind_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: StairsRight_0
+      name: DoorLeft-Ind_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 60dbfc2401af8a8b0800000000000000
-      internalID: -5140584026896089850
+      spriteID: 5109a8f65a9ad87a0800000000000000
+      internalID: -6373251369653333995
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      StairsRight_0: -5140584026896089850
+      DoorLeft-Ind_0: -6373251369653333995
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -9,6 +9,7 @@ namespace WolverineSoft.DialogueSystem.DefaultUI
     {
         [SerializeField] GameObject profileUI;
         [SerializeField] Image profileImage;
+        [SerializeField] GameObject profileTextBox;
         [SerializeField] TextMeshProUGUI profileText;
 
         public void Disable()
@@ -19,7 +20,11 @@ namespace WolverineSoft.DialogueSystem.DefaultUI
         public void SetProfile(DialogueProfile profile)
         {
             profileUI.SetActive(true);
+            
+            profileImage.gameObject.SetActive(profile.sprite!=null);
             profileImage.sprite = profile.sprite;
+            
+            profileTextBox.SetActive(profile.characterName!="");
             profileText.text = profile.characterName;
         }
     }

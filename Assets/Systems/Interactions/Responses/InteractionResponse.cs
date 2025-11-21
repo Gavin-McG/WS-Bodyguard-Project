@@ -5,9 +5,8 @@ using WolverineSoft.DialogueSystem;
 [RequireComponent(typeof(Interaction))]
 public abstract class InteractionResponse : MonoBehaviour
 {
-    [SerializeField] protected bool TriggerOnce = true;
-
-    private bool hasTriggered = false;
+    [SerializeField] public bool TriggerOnce = false;
+    [HideInInspector] public bool hasTriggered = false;
 
     public void TryTriggerResponse()
     {

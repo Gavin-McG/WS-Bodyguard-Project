@@ -51,7 +51,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _DITHER: 0
-    - _Dither: 1
+    - _Dither: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:

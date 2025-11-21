@@ -9,9 +9,9 @@ public class TeleportObjectResponse : InteractionResponse
     {
         Rigidbody rb = objectToTeleport.GetComponent<Rigidbody>();
         
-        if (rb == null)
+        //if (rb == null)
             objectToTeleport.transform.position = teleportPosition.position;
-        else 
-            rb.MovePosition(objectToTeleport.transform.position);
+        //else 
+            //rb.MovePosition(objectToTeleport.transform.position);
     }
 }

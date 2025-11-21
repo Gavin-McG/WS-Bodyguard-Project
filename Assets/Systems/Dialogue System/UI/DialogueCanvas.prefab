@@ -173,6 +173,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2985323087429405688, guid: 91b2bc325d2a8934183331b95b79ab85, type: 3}
+      propertyPath: profileTextBox
+      value: 
+      objectReference: {fileID: 5672569742285754416}
     - target: {fileID: 5330983071921514147, guid: 91b2bc325d2a8934183331b95b79ab85, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -349,6 +353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20182143d6584d619fbabde79fa55fe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSystem.ExampleInterface.TimeLimitUI
+--- !u!1 &5672569742285754416 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6668741898541965097, guid: 91b2bc325d2a8934183331b95b79ab85, type: 3}
+  m_PrefabInstance: {fileID: 1311995878517100313}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6462934545827906189 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5441986583255682452, guid: 91b2bc325d2a8934183331b95b79ab85, type: 3}
