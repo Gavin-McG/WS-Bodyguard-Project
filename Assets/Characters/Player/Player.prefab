@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1447575422736964559}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -0.15}
+  m_LocalPosition: {x: 0, y: 1.369, z: -0.15}
   m_LocalScale: {x: 0.5, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -79,12 +79,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 8297447318836241345, guid: 54256f73a58283d43b7f61cf50664cae, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 54256f73a58283d43b7f61cf50664cae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.14, y: 0.18}
+  m_Size: {x: 0.6666667, y: 0.6666667}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -118,8 +118,8 @@ Transform:
   m_GameObject: {fileID: 3538112995542519529}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: -0.15}
-  m_LocalScale: {x: 0.9714286, y: 1.3738073, z: 1}
+  m_LocalPosition: {x: 0, y: 0.34988785, z: -0.15}
+  m_LocalScale: {x: 0.9615385, y: 1.3598206, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8826281308916155787}
@@ -171,7 +171,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 5929319179614530733, guid: 8fb9127b869321342b5325596768ca78, type: 3}
+  m_Sprite: {fileID: -3860537973577564116, guid: 2a8ff1c92b1e74b4cb59a94f0579bef8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteLibrary
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 61eab93f539504043adaed0eaf6fa477, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: e104bb7145f3ac74aaf1c590030dd2e7, type: 3}
 --- !u!114 &168548392826041562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,7 +334,7 @@ MonoBehaviour:
   spriteTransform: {fileID: 4997411518469045828}
   spriteRenderer: {fileID: 870609578708690849}
   offset: {x: 0, y: -0.5, z: -0.15}
-  width: 0.68
+  width: 0.5
 --- !u!114 &4841569088146889086
 MonoBehaviour:
   m_ObjectHideFlags: 0
