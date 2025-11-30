@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Song1
   m_EditorClassIdentifier: Assembly-CSharp::SongData
   bpm: 60
-  note_speed: 1
+  note_speed: 3
   song_length: 10

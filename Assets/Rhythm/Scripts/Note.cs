@@ -23,7 +23,7 @@ public class Note : MonoBehaviour
     void Update()
     {
 
-        TESTtime_to_hit.text = (TimeToHit - RhythmGameManager.instance.Game_Time + "").Substring(0, Math.Min(3, (TimeToHit - RhythmGameManager.instance.Game_Time + "").Length));
+        TESTtime_to_hit.text = (TimeToHit - RhythmGameManager.Instance.Game_Time + "").Substring(0, Math.Min(3, (TimeToHit - RhythmGameManager.Instance.Game_Time + "").Length));
 
     }
     public void Hit()

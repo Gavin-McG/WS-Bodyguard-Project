@@ -1,233 +1,272 @@
-using NUnit.Framework.Internal.Filters;
+using System;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class RhythmGameManager : MonoBehaviour
 {
+    public static RhythmGameManager Instance;
+    public static UnityEvent<int> end_song = new();
 
-    //please note, i do NOT have any experience creating rhythm games.
-    //this is just A way that i came up with implementing it. fully guessing here
-    //feel free to change it
+    [Serializable]
+    struct RhythmInputs
+    {
+        [SerializeField] public InputActionReference up;
+        [SerializeField] public InputActionReference down;
+        [SerializeField] public InputActionReference left;
+        [SerializeField] public InputActionReference right;
 
-    public static RhythmGameManager instance;
+        public InputActionMap ActionMap =>
+            up?.action?.actionMap;
+    }
 
-    double game_start_time = 0f;
-    public double Game_Time;
+    [Serializable]
+    struct Indicators
+    {
+        [SerializeField] public Indicator up;
+        [SerializeField] public Indicator down;
+        [SerializeField] public Indicator left;
+        [SerializeField] public Indicator right;
+    }
 
-    bool game_active = true;
+    public enum Direction { Left, Down, Up, Right }
 
-    public static UnityEvent<int> end_song;
+    [Header("Main Settings")]
+    [SerializeField] private GameObject rhythm_minigame;
+    [SerializeField] private RhythmInputs inputs;
+    [SerializeField] private Indicators indicators;
 
-    [SerializeField] GameObject rhythm_minigame;
-    [SerializeField] Indicator left_indicator;
-    [SerializeField] Indicator up_indicator;
-    [SerializeField] Indicator down_indicator;
-    [SerializeField] Indicator right_indicator;
+    [Header("Notes")]
+    [SerializeField] private Transform map_movement;
+    [SerializeField] private Note[] note_prefab; // [left, down, up, right]
 
-    [SerializeField] Transform map_movement;
-    [SerializeField] GameObject[] note_prefab; //left down up right
+    [Header("Game Tuning")]
+    [SerializeField] private float grace_period = 0.15f;
+    [SerializeField] private float early_time = 0.05f;
+    [SerializeField] private float bpm = 60f;
+    [SerializeField] private float note_speed = 1f;
 
-    [SerializeField] float grace_period;
-    [SerializeField] float early_time; //this is to add a miss to prevent the spamming of all notes
+    [Header("UI")]
+    [SerializeField] private TMP_Text miss_text;
 
-    [SerializeField] float bpm = 60f;
-    [SerializeField] float note_speed = 1f; //literally multiply everything noterelated by this to maintain the beats
+    private int misses = 0;
+    private float game_start_time = 0f;
+    public float Game_Time { get; private set; }
 
-    [SerializeField] TMP_Text miss_text;
-    int misses = 0;
+    private bool game_active = false;
 
-    AudioSettings audio_settings;
-
-    int progression = 0; //the current array of the note in the map
+    private int progression = 0;
     public Note[] Current_Map;
 
     public SongData current_song_data;
 
-
-    public enum Direction
+    // left, down, up, right times (or -1)
+    private readonly double[] QueuedInputs = { -1, -1, -1, -1 };
+    
+    private void Awake()
     {
-        Left, 
-        Down,
-        Up,
-        Right
+        Instance = this;
+        DisableInputMap();
     }
 
-    double[] QueuedInputs ={ -1, -1, -1, 1}; //left down up right, this will contain -1 if no queued inputs and the time the queued input was hit if there is
-
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnEnable()
     {
-
-        Start_Game(current_song_data);
+        inputs.up.action.started += OnUp;
+        inputs.down.action.started += OnDown;
+        inputs.left.action.started += OnLeft;
+        inputs.right.action.started += OnRight;
     }
 
-    void Start_Game(SongData data) //this function will eventually be the function that starts the rhythm section.
+    private void OnDisable()
     {
+        inputs.up.action.started -= OnUp;
+        inputs.down.action.started -= OnDown;
+        inputs.left.action.started -= OnLeft;
+        inputs.right.action.started -= OnRight;
+    }
 
-        map_movement.position = Vector3.zero;
-        instance = this;
-        game_start_time = AudioSettings.dspTime;
+    
+    private void EnableInputMap()
+    {
+        var map = inputs.ActionMap;
+        if (map != null) map.Enable();
+    }
 
-        rhythm_minigame.SetActive(true);
+    private void DisableInputMap()
+    {
+        var map = inputs.ActionMap;
+        if (map != null) map.Disable();
+    }
 
+    
+    public void Start_Game(SongData data)
+    {
+        current_song_data = data;
 
         bpm = data.bpm;
         note_speed = data.note_speed;
 
+        progression = 0;
+        misses = 0;
+        miss_text.text = "Misses: 0";
+
+        rhythm_minigame.SetActive(true);
+
         GenerateStartingRandomSong(data.song_length);
 
-        game_start_time = AudioSettings.dspTime;
+        game_start_time = (float)AudioSettings.dspTime;
+        game_active = true;
 
+        EnableInputMap();
     }
 
-    void GenerateStartingRandomSong(int n)
+    private void OnSongEnd()
     {
+        game_active = false;
 
+        DisableInputMap();
+        rhythm_minigame.SetActive(false);
+
+        end_song.Invoke(misses);
+        Debug.Log("Song over");
+    }
+
+    
+    private void GenerateStartingRandomSong(int n)
+    {
         Note[] notes = new Note[n];
 
         for (int i = 1; i <= n; i++)
         {
+            int dir = UnityEngine.Random.Range(0, 4);
 
-            int new_note_direction = Random.Range(0, 4);
+            float xPos = (dir * 2) - 3;
+            float yPos = -i * note_speed * 60f / bpm;
 
-            Note new_note = Instantiate(note_prefab[new_note_direction], new Vector2(((float) new_note_direction * 2) - 3, -i * note_speed * 60f / bpm), Quaternion.identity).GetComponent<Note>();
+            Note new_note = Instantiate(note_prefab[dir],
+                                        new Vector3(xPos, yPos, 0) + transform.position,
+                                        Quaternion.identity,
+                                        map_movement);
 
-            new_note.transform.SetParent(map_movement);
             new_note.TimeToHit = i * note_speed * 60f / bpm;
 
             notes[i - 1] = new_note;
-
         }
 
         Current_Map = notes;
-
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+    private void Update()
     {
-        if (game_active)
+        if (!game_active) return;
+
+        Game_Time = ((float)AudioSettings.dspTime - game_start_time) * note_speed;
+
+        if (progression >= Current_Map.Length)
         {
-            Game_Time = (AudioSettings.dspTime - game_start_time) * note_speed;
+            OnSongEnd();
+            return;
+        }
 
-            //manage hit
+        ProcessHits();
+        ProcessMisses();
 
-            //manage queued inputs
+        map_movement.position = new Vector3(map_movement.position.x, Game_Time + transform.position.y, 0);
+    }
 
-            int i = progression;
+    
+    private void ProcessHits()
+    {
+        int i = progression;
 
+        while (i < Current_Map.Length && Current_Map[i].TimeToHit < Game_Time + grace_period)
+        {
+            int matchedDirection = -1;
 
-            if (i >= Current_Map.Length)
+            // Check for hit
+            if (!Current_Map[i].hit)
             {
-                OnSongEnd();
-                return;
-            }
-            float current_input_time = Current_Map[progression].TimeToHit;
+                int dir = (int)Current_Map[i].direction;
+                double queued = QueuedInputs[dir];
 
-            while (Current_Map[i].TimeToHit < Game_Time + grace_period)
-            {
-
-                int ok = -1;
-
-                if (!Current_Map[i].hit && Mathf.Abs((float)(QueuedInputs[(int)Current_Map[i].direction] - Current_Map[i].TimeToHit)) <= grace_period) //check if the next note is a hit
+                if (queued != -1 && Mathf.Abs((float)(queued - Current_Map[i].TimeToHit)) <= grace_period)
                 {
-
-                    ok = (int) Current_Map[i].direction;
+                    matchedDirection = dir;
                     Current_Map[i].Hit();
-                    Debug.Log("nice hit");
                     progression = i + 1;
 
+                    Debug.Log("Nice hit");
                 }
-
-                for (int j = 0; j < 4; j++)
-                {
-                    if (QueuedInputs[j] != -1 && j != ok)
-                    {
-                        OnMiss();
-                    }
-                }
-
-                i++;
-
-                if (i >= Current_Map.Length)
-                    break;
             }
 
-            //reset inputs
-
-            for (i = 0; i < 4; i++)
+            // Apply unrelated queued inputs as misses
+            for (int j = 0; j < 4; j++)
             {
-                QueuedInputs[i] = -1;
-            }
-
-
-            //check if the current note is outside the ability to actually hit within the grace period-- if it is, the note is missed
-
-            if (progression >= Current_Map.Length)
-                return;
-
-            if (Game_Time - Current_Map[progression].TimeToHit > grace_period * note_speed)
-            {
-                progression++;
-
-                if (!Current_Map[progression].hit)
-                {
+                if (QueuedInputs[j] != -1 && j != matchedDirection)
                     OnMiss();
-                }
-                
             }
 
-            map_movement.position = new Vector2(map_movement.position.x, (float) Game_Time);
+            i++;
+        }
+
+        ResetQueuedInputs();
+    }
+
+    private void ProcessMisses()
+    {
+        if (progression >= Current_Map.Length) return;
+
+        if (Game_Time - Current_Map[progression].TimeToHit > grace_period * note_speed)
+        {
+            if (!Current_Map[progression].hit)
+                OnMiss();
+
+            progression++;
         }
     }
 
-    void OnMiss()
+    private void ResetQueuedInputs()
+    {
+        for (int i = 0; i < 4; i++)
+            QueuedInputs[i] = -1;
+    }
+
+
+
+    private void OnMiss()
     {
         misses++;
-
         miss_text.text = "Misses: " + misses;
-        Debug.Log("you missed!");
-        //
+        Debug.Log("Miss!");
     }
 
-    void OnSongEnd()
+
+
+    private void OnLeft(InputAction.CallbackContext ctx)
     {
-        end_song.Invoke(misses);
-
-        rhythm_minigame.SetActive(false);
-
-        Debug.Log("song over");
-    }
-
-    //inputs below
-
-    private void OnLeft()
-    {
-        left_indicator.Indicate();
+        indicators.left.Indicate();
         QueuedInputs[0] = Game_Time;
     }
 
-    private void OnDown()
+    private void OnDown(InputAction.CallbackContext ctx)
     {
-        down_indicator.Indicate();
+        indicators.down.Indicate();
         QueuedInputs[1] = Game_Time;
     }
 
-    private void OnUp()
+    private void OnUp(InputAction.CallbackContext ctx)
     {
-        up_indicator.Indicate();
+        indicators.up.Indicate();
         QueuedInputs[2] = Game_Time;
     }
 
-    private void OnRight()
+    private void OnRight(InputAction.CallbackContext ctx)
     {
-        right_indicator.Indicate();
+        indicators.right.Indicate();
         QueuedInputs[3] = Game_Time;
     }
-
 }
