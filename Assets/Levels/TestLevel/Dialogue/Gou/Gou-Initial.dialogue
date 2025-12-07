@@ -19,6 +19,10 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1016948360476885313
+      type: {class: 'Constant`1[[RequirementSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
+      data:
+        m_Value: {fileID: 11400000, guid: ced89c9d58bc954449e90398ac051d7c, type: 2}
     - rid: 2135567186855198966
       type: {class: GraphModelImp, ns: Unity.GraphToolkit.Editor.Implementation, asm: Unity.GraphToolkit.Editor}
       data:
@@ -72,7 +76,7 @@ MonoBehaviour:
           serializedVersion: 2
           x: -346
           y: 69
-          width: 2677
+          width: 2712
           height: 1276
         m_GraphElementMetaData:
         - m_Guid:
@@ -1721,10 +1725,10 @@ MonoBehaviour:
         m_InputConstantsById:
           m_KeyList:
           - __option_Event
-          - __option_requirement
+          - __option_value/requirement
           m_ValueList:
           - rid: 2135567186855199154
-          - rid: 2135567186855199161
+          - rid: 1016948360476885313
         m_InputPortInfos:
           expandedPortsById:
             m_KeyList: []
@@ -1875,10 +1879,6 @@ MonoBehaviour:
           m_PortDirection: 1
           m_PortOrientation: 0
           m_Title: Data
-    - rid: 2135567186855199161
-      type: {class: 'Constant`1[[RequirementSO, Assembly-CSharp]]', ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
-      data:
-        m_Value: {fileID: 11400000, guid: ced89c9d58bc954449e90398ac051d7c, type: 2}
     - rid: 2135567200068567110
       type: {class: WireModel, ns: Unity.GraphToolkit.Editor, asm: Unity.GraphToolkit.Internal.Editor}
       data:

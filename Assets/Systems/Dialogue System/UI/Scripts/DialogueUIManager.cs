@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using WolverineSoft.DialogueSystem.Default;
 using WolverineSoft.DialogueSystem;
 
@@ -20,6 +21,7 @@ namespace WolverineSoft.DialogueSystem.DefaultUI
         [SerializeField] private ChoiceUIManager choiceUIManager;
         [SerializeField] private TimeLimitUI timeLimitUI;
         [SerializeField] private ProfileUIManager profileUIManager;
+        [SerializeField] private InputActionAsset inputAsset;
         
         private DefaultDialogueSettings currentSettings;
         private MyParams currentParams;
@@ -48,19 +50,35 @@ namespace WolverineSoft.DialogueSystem.DefaultUI
             
             choiceUIManager.RemoveChoiceListener(ChoicePressed);
             choiceUIManager.RemoveContinueListener(ContinuePressed);
+            EnableInputMap();
+        }
+
+        private void EnableInputMap()
+        {
+            var map = inputAsset.FindActionMap("Player");
+            if (map != null) map.Enable();
+        }
+    
+        private void DisableInputMap()
+        {
+            var map = inputAsset.FindActionMap("Player");
+            if (map != null) map.Disable();
         }
 
         private void BeginDialogue()
         {
             currentSettings = dialogueManager.GetSettings<DefaultDialogueSettings>();
             DisplayDialogue(dialogueManager.AdvanceDialogue<DefaultBaseParams, DefaultChoiceParams, DefaultOptionParams>());
+			DisableInputMap();
         }
 
         private void DisplayDialogue(MyParams dialogueParams)
         {
             if (dialogueParams == null)
             {
+                //Ending dialogue, no further content
                 HideDialogue();
+                EnableInputMap();
                 return;
             }
             
